@@ -2,19 +2,16 @@ package main
 
 import (
 	"github.com/irvandandung/goAPI/config"
+	"github.com/irvandandung/goAPI/pkg/data"
 	"log"
 )
 
 func main() {
-	db := config.ConnectDB()
-	defer db.Close()
-
-	insert, err := db.Query("insert into user (username, password) values ('dandung', '"+config.GetMD5Hash("admin")+"')")
+	dataUser := map[string]string { "username":"dandung", "password":config.GetMD5Hash("admin") }
+	response, err := data.InsertDataUser(dataUser)
 	if err != nil {
 		log.Fatal(err)
 	}else{
-		log.Println("input success")
+		log.Println(response)
 	}
-
-	defer insert.Close()
 }
