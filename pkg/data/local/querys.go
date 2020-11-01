@@ -45,8 +45,16 @@ func QueryUpdate(db *sql.DB, table string, data map[string]string, wheredata map
 	return "update success", nil
 }
 
-func QuerySelect(db *sql.DB, table string, data []string) (*sql.Rows) {
-	rows, err := db.Query("select "+strings.Join(data, ", ")+" from "+table)
+func QuerySelect(db *sql.DB, table string, data []string, wheredata map[string]string) (*sql.Rows) {
+	query := "select "+strings.Join(data, ", ")+" from "+table
+	wheres := []string{}
+	if len(wheredata) != 0 {
+		for key, value := range wheredata {
+			wheres = append(wheres, key+value)
+		}
+		query = query+" where "+strings.Join(wheres, ", ")
+	}
+	rows, err := db.Query(query)
 	if (err != nil){
 		log.Fatal(err)
 	}
