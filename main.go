@@ -1,24 +1,18 @@
 package main
 
 import (
-	"github.com/irvandandung/goAPI/pkg/data"
+	"github.com/irvandandung/goAPI/config"
 	"log"
+	"net/http"
+	"github.com/gorilla/mux"
+	"reflect"
 )
 
 func main() {
-	user := data.GetAllDataUsers()
-	for key, val := range user {
-		log.Println(val.Username)
-		log.Println(val.Password)
-		log.Println(key)
-	}
+	r := mux.NewRouter()
 
-	bukus := data.GetAllDataBuku()
-	for key, val := range bukus {
-		log.Println(val)
-		log.Println(key)	
-	}
+    log.Println(reflect.TypeOf(r))
+    config.Routes(r)
 
-	buku := data.GetDataBukuById(1)
-	log.Println(buku)
+    log.Fatal(http.ListenAndServe(":1234", r))
 }
