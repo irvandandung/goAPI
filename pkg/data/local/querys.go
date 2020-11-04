@@ -52,7 +52,7 @@ func QuerySelect(db *sql.DB, table string, data []string, wheredata map[string]s
 		for key, value := range wheredata {
 			wheres = append(wheres, key+value)
 		}
-		query = query+" where "+strings.Join(wheres, ", ")
+		query = query+" where "+strings.Join(wheres, " ")
 	}
 	rows, err := db.Query(query)
 	if (err != nil){
