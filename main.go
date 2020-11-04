@@ -1,25 +1,17 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
-    "os"
     "log"
-	// "github.com/irvandandung/goAPI/config"
-	// "net/http"
-	// "github.com/gorilla/mux"
-	// "reflect"
+	"github.com/irvandandung/goAPI/pkg/controllers"
+	"net/http"
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	if errLoadDotenv := godotenv.Load(); errLoadDotenv != nil {
-		log.Println(errLoadDotenv.Error())
-		os.Exit(1)
-	}
-	log.Println(os.Getenv("HOST_DATABASE"))
-	// r := mux.NewRouter()
+	r := mux.NewRouter()
+    r.HandleFunc("/login", controllers.Login)
+	r.HandleFunc("/", controllers.YourHandler)
+	r.Use(controllers.MidAuthJwt)
 
- //    log.Println(reflect.TypeOf(r))
- //    config.Routes(r)
-
- //    log.Fatal(http.ListenAndServe(":1234", r))
+    log.Fatal(http.ListenAndServe(":1234", r))
 }
