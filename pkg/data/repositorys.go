@@ -54,6 +54,27 @@ func GetAllDataUsers() ([]Users){
 	return list_user
 }
 
+func GetDataUser(username string, password string) (bool, Users){
+	var user Users
+	data := false
+	wheredata := map[string]string{"username =":"'"+username+"' AND", "password =":"'"+config.GetMD5Hash(password)+"'"}
+	db := config.ConnectDB()
+	defer db.Close()
+	var fields = []string{"id", "username", "password"}
+	rows := local.QuerySelect(db, "user", fields, wheredata)
+	for rows.Next(){
+		err := rows.Scan(&user.Id, &user.Username, &user.Password)
+		if(err != nil){
+			log.Fatal(err.Error())
+		}
+	}
+	if(user.Username != ""){
+		data = true
+	}
+
+	return data, user
+}
+
 func GetAllDataBuku() ([]Buku){
 	var buku Buku
 	var list_buku []Buku
