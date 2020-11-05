@@ -1,26 +1,15 @@
 package data
 
-type ResponseBasic struct {
+type Response struct {
 	Status  int    `json:"status"`
 	Message string `json:"message"`
-}
-
-type ResponseUser struct {
-	Status  int    `json:"status"`
-	Message string `json:"message"`
-	Data    []Users
-}
-
-type ResponseBuku struct {
-	Status  int    `json:"status"`
-	Message string `json:"message"`
-	Data    []Buku
+	Data    interface {}
 }
 
 type Users struct {
-	Id        int `form:"id" json:"id"`
+	Id        float64 `form:"id" json:"id"`
 	Username string `form:"username" json:"username"`
-	Password  string `form:"password" json:"password"`
+	Role  string `form:"role" json:"role"`
 }
 
 type Buku struct {
