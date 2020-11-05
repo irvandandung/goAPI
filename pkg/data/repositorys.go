@@ -38,7 +38,7 @@ func UpdateDataBuku(data map[string]string, wheredata map[string]string) (string
 func GetAllDataUsers() ([]Users){
 	var user Users
 	var list_user []Users
-	wheredata := map[string]string{}
+	wheredata := map[int]string{}
 	db := config.ConnectDB()
 	defer db.Close()
 	var fields = []string{ "username", "password" }
@@ -57,7 +57,7 @@ func GetAllDataUsers() ([]Users){
 func GetDataUser(username string, password string) (bool, Users){
 	var user Users
 	data := false
-	wheredata := map[string]string{"username =":"'"+username+"' AND", "password =":"'"+config.GetMD5Hash(password)+"'"}
+	wheredata := map[int]string{0:"username='"+username+"' AND", 1:"password='"+config.GetMD5Hash(password)+"'"}
 	db := config.ConnectDB()
 	defer db.Close()
 	var fields = []string{"id", "username", "password"}
@@ -78,7 +78,7 @@ func GetDataUser(username string, password string) (bool, Users){
 func GetAllDataBuku() ([]Buku){
 	var buku Buku
 	var list_buku []Buku
-	wheredata := map[string]string{}
+	wheredata := map[int]string{}
 	db := config.ConnectDB()
 	defer db.Close()
 	var fields = []string{ "id", "judul", "keterangan", "pencipta", "tahun" }
@@ -97,7 +97,7 @@ func GetAllDataBuku() ([]Buku){
 func GetDataBukuById(id int) (Buku) {
 	var buku Buku
 	idString := strconv.Itoa(id)
-	wheredata := map[string]string{ "id =":idString}
+	wheredata := map[int]string{ 0:"id="+idString}
 	db := config.ConnectDB()
 	defer db.Close()
 	var fields = []string{ "id", "judul", "keterangan", "pencipta", "tahun" }

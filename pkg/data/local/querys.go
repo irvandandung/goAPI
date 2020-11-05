@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"strings"
 	"log"
+	"sort"
 )
 
 func QueryInsert(db *sql.DB, table string, data map[string]string) (string, error) {
@@ -45,12 +46,18 @@ func QueryUpdate(db *sql.DB, table string, data map[string]string, wheredata map
 	return "update success", nil
 }
 
-func QuerySelect(db *sql.DB, table string, data []string, wheredata map[string]string) (*sql.Rows) {
+func QuerySelect(db *sql.DB, table string, data []string, wheredata map[int]string) (*sql.Rows) {
 	query := "select "+strings.Join(data, ", ")+" from "+table
-	wheres := []string{}
 	if len(wheredata) != 0 {
-		for key, value := range wheredata {
-			wheres = append(wheres, key+value)
+		wheres := []string{}
+		keyswhere := make([]int, 0, len(wheredata))
+		for key := range wheredata {
+			keyswhere = append(keyswhere, key)
+
+		}
+		sort.Ints(keyswhere)
+		for _, k := range keyswhere{
+			wheres = append(wheres, wheredata[k])
 		}
 		query = query+" where "+strings.Join(wheres, " ")
 	}
