@@ -41,10 +41,10 @@ func GetAllDataUsers() ([]Users){
 	wheredata := map[int]string{}
 	db := config.ConnectDB()
 	defer db.Close()
-	var fields = []string{ "username", "password" }
+	var fields = []string{ "id", "username", "role" }
 	rows := local.QuerySelect(db, "user", fields, wheredata)
 	for rows.Next() {
-		err := rows.Scan(&user.Username, &user.Password)
+		err := rows.Scan(&user.Id, &user.Username, &user.Role)
 		if(err != nil){
 			log.Fatal(err.Error())
 		}
@@ -60,10 +60,10 @@ func GetDataUser(username string, password string) (bool, Users){
 	wheredata := map[int]string{0:"username='"+username+"' AND", 1:"password='"+config.GetMD5Hash(password)+"'"}
 	db := config.ConnectDB()
 	defer db.Close()
-	var fields = []string{"id", "username", "password"}
+	var fields = []string{"id", "username", "role"}
 	rows := local.QuerySelect(db, "user", fields, wheredata)
 	for rows.Next(){
-		err := rows.Scan(&user.Id, &user.Username, &user.Password)
+		err := rows.Scan(&user.Id, &user.Username, &user.Role)
 		if(err != nil){
 			log.Fatal(err.Error())
 		}
