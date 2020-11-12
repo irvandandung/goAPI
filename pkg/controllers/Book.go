@@ -1,6 +1,7 @@
 package controllers
 
 import(
+	"strconv"
 	"net/http"
 	"encoding/json"
 	"log"
@@ -11,12 +12,67 @@ import(
 	"github.com/irvandandung/goAPI/pkg/data"
 )
 
+func GetAllDataBook(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-Type", "application/json")
+
+    if r.Method != "GET" {
+        http.Error(w, "Unsupported http method", http.StatusBadRequest)
+        return
+    }
+
+    allDataBook := data.GetAllDataBuku()
+
+    response := data.Response{
+        Status : 200,
+        Message : "Success",
+        Data : allDataBook,
+    }
+
+    log.Println(response)
+    json.NewEncoder(w).Encode(response)
+}
+
+func GetDataBook(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-Type", "application/json")
+	if r.Method != "POST" {
+        http.Error(w, "Unsupported http method", http.StatusBadRequest)
+        return
+    }
+
+    keys, ok := r.URL.Query()["id"]
+    if !ok {
+    	http.Error(w, "Please add parameter value", http.StatusBadRequest)
+    	return 
+    }
+
+    log.Println(keys)
+    i, _ := strconv.Atoi(keys[0])
+    getDataBoook := data.GetDataBukuById(i)
+    var response data.Response
+    if getDataBoook.Id == 0 {
+    	response = data.Response{
+	        Status : 201,
+	        Message : "Data Tidak Ditemukan",
+	        Data : getDataBoook,
+	    }
+    }else{
+    	response = data.Response{
+    	    Status : 200,
+        	Message : "Success",
+        	Data : getDataBoook,
+    	}
+    }
+
+    log.Println(response)
+    json.NewEncoder(w).Encode(response)
+}
+
 func SubmitPhoto(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-Type", "application/json")
 	alias := r.FormValue("alias")
 
 	if r.Method != "POST" {
-        http.Error(w, "", http.StatusBadRequest)
+        http.Error(w, "Unsupported http method", http.StatusBadRequest)
         return
     }
 
