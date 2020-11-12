@@ -92,10 +92,10 @@ func GetAllDataBuku() ([]Buku){
 	wheredata := map[int]string{}
 	db := config.ConnectDB()
 	defer db.Close()
-	var fields = []string{ "id", "judul", "keterangan", "pencipta", "tahun" }
+	var fields = []string{ "id", "judul"}
 	rows := local.QuerySelect(db, "buku", fields, wheredata)
 	for rows.Next() {
-		err := rows.Scan(&buku.Id, &buku.Judul, &buku.Keterangan, &buku.Pencipta, &buku.Tahun)
+		err := rows.Scan(&buku.Id, &buku.Judul)
 		if(err != nil){
 			log.Fatal(err.Error())
 		}
@@ -111,10 +111,10 @@ func GetDataBukuById(id int) (Buku) {
 	wheredata := map[int]string{ 0:"id="+idString}
 	db := config.ConnectDB()
 	defer db.Close()
-	var fields = []string{ "id", "judul", "keterangan", "pencipta", "tahun" }
+	var fields = []string{ "id", "judul", "keterangan", "pencipta", "nama_gambar", "tahun" }
 	rows := local.QuerySelect(db, "buku", fields, wheredata)
 	for rows.Next() {
-		err := rows.Scan(&buku.Id, &buku.Judul, &buku.Keterangan, &buku.Pencipta, &buku.Tahun)
+		err := rows.Scan(&buku.Id, &buku.Judul, &buku.Keterangan, &buku.Pencipta, &buku.Nama_gambar, &buku.Tahun)
 		if(err != nil){
 			log.Fatal(err.Error())
 		}

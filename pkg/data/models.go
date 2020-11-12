@@ -17,5 +17,6 @@ type Buku struct {
 	Judul string `form:"judul" json:"judul"`
 	Keterangan string `form:"keterangan" json:"keterangan"`
 	Pencipta string `form:"pencipta" json:"pencipta"`
+	Nama_gambar string `form:"nama_gambar" json:"nama_gambar"`
 	Tahun string `form:"tahun" json:"tahun"`
 }
