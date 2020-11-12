@@ -14,6 +14,17 @@ func InsertDataUser(data map[string]string) (string, error){
 	return response, err
 }
 
+func InsertGambarBuku(namegambar string) (string){
+	data := map[string]string{"nama_gambar" : namegambar}
+	db := config.ConnectDB()
+	defer db.Close()
+	response, err := local.QueryInsert(db, "list_gambar_buku", data)
+	if(err != nil){
+		log.Fatal(err.Error())
+	}
+	return response
+} 
+
 func InsertDataBuku(data map[string]string) (string, error){
 	db := config.ConnectDB()
 	defer db.Close()
