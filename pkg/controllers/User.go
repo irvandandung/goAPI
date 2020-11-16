@@ -64,6 +64,40 @@ func Login(w http.ResponseWriter, r *http.Request){
     json.NewEncoder(w).Encode(map[string]string{"token": signedToken})
 }
 
+func AddUser(w http.ResponseWriter, r *http.Request){
+    w.Header().Set("Content-Type", "application/json")
+
+    userInfo := UserInfo(r.Context().Value("userInfo").(jwt.MapClaims))
+    if r.Method != "POST" {
+        http.Error(w, "Unsupported http method", http.StatusBadRequest)
+        return
+    }
+    if(userInfo.Role != "superuser"){
+        http.Error(w, "You Can't Access this, because you not superuser", http.StatusBadRequest)   
+        return
+    }
+
+    username, _ := r.URL.Query()["name"]
+    password, _ := r.URL.Query()["password"]
+    if len(username) == 0 || len(password) == 0 {
+        http.Error(w, "Parameter request not valid", http.StatusBadRequest)
+        return
+    }
+
+    check := data.InsertDataUser(username[0], password[0])
+    user := map[string]string{
+        "username" : username[0],
+        "role" : "basic",
+    }
+    response := data.Response{
+        Status : 200,
+        Message : check,
+        Data : user,
+    }
+    log.Println(response)
+    json.NewEncoder(w).Encode(response)
+}
+
 func GetMyDataProfile(w http.ResponseWriter, r *http.Request){
     w.Header().Set("Content-Type", "application/json")
 

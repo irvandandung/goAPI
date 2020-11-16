@@ -14,6 +14,7 @@ func main() {
     r.HandleFunc("/login", controllers.Login)
 	r.HandleFunc("/user/myprofile", controllers.GetMyDataProfile)
 	r.HandleFunc("/user/all-data-user", controllers.GetAllDataUser)
+	r.HandleFunc("/user/add-data-user", controllers.AddUser)
 
 	//Book
 	r.HandleFunc("/book/addimage", controllers.SubmitPhoto)

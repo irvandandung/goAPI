@@ -7,11 +7,19 @@ import (
 	"strconv"
 )
 
-func InsertDataUser(data map[string]string) (string, error){
+func InsertDataUser(username string, password string) (string){
+	data := map[string]string{
+		"username" : username,
+		"password" : config.GetMD5Hash(password),
+		"role"     : "basic",
+	}
 	db := config.ConnectDB()
 	defer db.Close()
 	response, err := local.QueryInsert(db, "user", data)
-	return response, err
+	if(err != nil){
+		log.Fatal(err.Error())
+	}
+	return response
 }
 
 func InsertGambarBuku(namegambar string) (string){
