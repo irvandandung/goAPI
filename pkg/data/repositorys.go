@@ -33,11 +33,21 @@ func InsertGambarBuku(namegambar string) (string){
 	return response
 } 
 
-func InsertDataBuku(data map[string]string) (string, error){
+func InsertDataBuku(book Buku) (string){
+	data := map[string]string{
+		"judul" : book.Judul,
+		"keterangan" : book.Keterangan,
+		"pencipta" : book.Pencipta,
+		"nama_gambar" : book.Nama_gambar,
+		"tahun" : book.Tahun,
+	}
 	db := config.ConnectDB()
 	defer db.Close()
 	response, err := local.QueryInsert(db, "buku", data)
-	return response, err
+	if(err != nil){
+		log.Fatal(err.Error())
+	}
+	return response
 }
 
 func UpdateDataUser(data map[string]string, wheredata map[string]string) (string, error){
