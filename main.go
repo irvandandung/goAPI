@@ -20,6 +20,7 @@ func main() {
 	r.HandleFunc("/book/addimage", controllers.SubmitPhoto)
 	r.HandleFunc("/book/all-data-book", controllers.GetAllDataBook)
 	r.HandleFunc("/book/get-detail-book", controllers.GetDataBook)
+	r.HandleFunc("/book/add-data-book", controllers.AddDataBook)
 
 	//Auth Jwt
 	r.Use(controllers.MidAuthJwt)
