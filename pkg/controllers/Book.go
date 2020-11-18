@@ -67,6 +67,40 @@ func GetDataBook(w http.ResponseWriter, r *http.Request){
     json.NewEncoder(w).Encode(response)
 }
 
+func AddDataBook(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-Type", "application/json")
+
+	var check string
+
+	if r.Method != "POST" {
+        http.Error(w, "Unsupported http method", http.StatusBadRequest)
+        return
+    }
+
+    var book data.Buku
+
+    err := json.NewDecoder(r.Body).Decode(&book)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+
+    if book.Judul != "" || book.Keterangan != "" || book.Pencipta != "" || book.Tahun != "" {
+    	check = data.InsertDataBuku(book)
+    }else{
+    	http.Error(w, "Body request not complete", http.StatusBadRequest)
+        return
+    }
+
+    response := data.Response{
+    	    Status : 200,
+        	Message : check,
+        	Data : book,
+    }
+    log.Println(response)
+    json.NewEncoder(w).Encode(response)
+}
+
 func SubmitPhoto(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-Type", "application/json")
 	alias := r.FormValue("alias")
