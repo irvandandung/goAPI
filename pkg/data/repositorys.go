@@ -57,11 +57,24 @@ func UpdateDataUser(data map[string]string, wheredata map[string]string) (string
 	return response, err
 }
 
-func UpdateDataBuku(data map[string]string, wheredata map[string]string) (string, error){
+func UpdateDataBuku(book Buku, id int) (string){
+	data := map[string]string{
+		"judul" : "'"+book.Judul+"'",
+		"keterangan" : "'"+book.Keterangan+"'",
+		"pencipta" : "'"+book.Pencipta+"'",
+		"nama_gambar" : "'"+book.Nama_gambar+"'",
+		"tahun" : "'"+book.Tahun+"'",
+	}
+	wheredata := map[string]string{
+		"id" : strconv.Itoa(id),
+	}
 	db := config.ConnectDB()
 	defer db.Close()
 	response, err := local.QueryUpdate(db, "buku", data, wheredata)
-	return response, err
+	if(err != nil){
+		log.Fatal(err.Error())
+	}
+	return response
 }
 
 func GetAllDataUsers() ([]Users){
