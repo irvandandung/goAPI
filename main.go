@@ -10,6 +10,10 @@ import (
 func main() {
 	r := mux.NewRouter()
 
+    //image static file
+    fs := http.FileServer(http.Dir("./assets/images/"))
+    r.PathPrefix("/assets/images/").Handler(http.StripPrefix("/assets/images/", fs))
+
 	//User
     r.HandleFunc("/login", controllers.Login)
 	r.HandleFunc("/user/myprofile", controllers.GetMyDataProfile)
